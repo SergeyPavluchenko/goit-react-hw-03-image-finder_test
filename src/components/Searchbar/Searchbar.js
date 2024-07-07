@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik';
 
-import { SearchbarBlock } from './SearchbarStyled';
+import { LabelStyle, SearchbarBlock } from './SearchbarStyled';
 
 export const Searchbar = ({ onAnswerText }) => {
   return (
@@ -16,7 +16,7 @@ export const Searchbar = ({ onAnswerText }) => {
         }}
       >
         <Form>
-          <label>Search</label>
+          <LabelStyle>Search</LabelStyle>
           <Field
             name="search"
             type="text"
