@@ -18,7 +18,12 @@ axios.defaults.baseURL = 'https://pixabay.com/api/';
 
 export const SearchAPI = async (text, page) => {
   const response = await axios.get(
-    `?q=${text}&lang=ru&key=${AUTH_KEY}&page=${page}&image_type=1&orientation=horizontal&per_page=12`
+    `?q=${text}&key=${AUTH_KEY}&page=${page}&image_type=1&orientation=horizontal&per_page=12`
   );
   return response.data.hits;
 };
+
+export const normalizedImages = imagesArray =>
+  imagesArray.map(({ id, tags, webformatURL, largeImageURL }) => {
+    return { id, tags, webformatURL, largeImageURL };
+  });

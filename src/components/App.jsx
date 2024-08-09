@@ -4,58 +4,82 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import { Searchbar } from './Searchbar/Searchbar';
 import { Layout } from './Layout/Layout';
-import { SearchAPI } from './API';
+import { normalizedImages, SearchAPI } from './API';
 import { SpinerLoader } from './SpinerLoader/SpinerLoader';
+import { ImageList } from './ImageList/ImageList';
+import { Button } from './Button/Button';
 
 export class App extends Component {
   state = {
     searchText: '',
+    images: [],
     isLoading: false,
     error: null,
+    page: 1,
+    isShow: false,
   };
-
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   this.setState({ isLoading: true, error: null });
-  //   const { searchText } = this.state;
-  //   if (prevState.searchText !== searchText) {
-  //     const res = SearchAPI(searchText);
-  //     return res;
-  //   }
-  // };
 
   componentDidUpdate = (prevProps, prevState) => {
     const { searchText } = this.state;
-    if (prevState.searchText !== searchText) {
+    if (
+      prevState.searchText !== searchText ||
+      prevState.page !== this.state.page
+    ) {
       this.response();
     }
   };
 
   response = async () => {
-    const { searchText } = this.state;
-    this.setState({ isLoading: true, error: null });
+    const { searchText, page } = this.state;
     try {
-      const res = await SearchAPI(searchText);
+      this.setState({ isLoading: true, error: null });
+      const res = await SearchAPI(searchText, page);
       console.log(res);
-      return res;
+
+      if (res.length === 12) {
+        this.setState({ isShow: true });
+      } else {
+        this.setState({ isShow: false });
+      }
+
+      if (res.length === 0) {
+        toast("Sorry image isn't found...", {
+          duration: 1500,
+        });
+      }
+
+      const normalizeImages = normalizedImages(res);
+
+      this.setState(state => ({
+        images: [...state.images, ...normalizeImages],
+      }));
     } catch (error) {
-      toast.error('Щось пішло не так 🤷‍♀️', { duration: 1000 });
+      toast.error('Щось пішло не так 🤷‍♀️', { duration: 1500 });
     } finally {
       this.setState({ isLoading: false });
     }
   };
 
   searchValues = text => {
-    console.log(text);
     this.setState({ searchText: text.search });
-    console.log(this.state);
+  };
+
+  loadPage = () => {
+    this.setState(prev => ({
+      page: prev.page + 1,
+    }));
   };
 
   render() {
-    const { isLoading } = this.state;
+    // console.log(this.state.images);
+    const { isLoading, isShow } = this.state;
     return (
       <Layout>
         <Searchbar onAnswerText={this.searchValues} />
         {isLoading && <SpinerLoader />}
+        <ImageList images={this.state.images} />
+        {isShow && <Button onClick={this.loadPage} />}
+        <></>
         <GlobalStyled />
         <Toaster />
       </Layout>
