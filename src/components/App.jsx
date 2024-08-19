@@ -71,7 +71,6 @@ export class App extends Component {
   };
 
   render() {
-    // console.log(this.state.images);
     const { isLoading, isShow } = this.state;
     return (
       <Layout>
@@ -79,7 +78,6 @@ export class App extends Component {
         {isLoading && <SpinerLoader />}
         <ImageList images={this.state.images} />
         {isShow && <Button onClick={this.loadPage} />}
-        <></>
         <GlobalStyled />
         <Toaster />
       </Layout>

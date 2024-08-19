@@ -8,7 +8,6 @@ export const Searchbar = ({ onAnswerText }) => {
       <Formik
         initialValues={{ search: '' }}
         onSubmit={(values, actions) => {
-          console.log(values);
           onAnswerText({
             ...values,
           });

@@ -1,3 +1,9 @@
+import { BlockButton, ButtonStyle } from './ButtonStyled';
+
 export const Button = ({ onClick }) => {
-  return <button onClick={onClick}>Load More</button>;
+  return (
+    <BlockButton>
+      <ButtonStyle onClick={onClick}>Load More</ButtonStyle>
+    </BlockButton>
+  );
 };
