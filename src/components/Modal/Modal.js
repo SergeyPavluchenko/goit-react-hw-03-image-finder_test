@@ -6,9 +6,13 @@ import { ImgStyle, ModalWindow, Overlay } from './ModalStyled';
 const ModaRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
-  componentDidMount = () => {};
+  // componentDidMount = () => {
+  //   window.addEventListener('keydown', this.hendleClick);
+  // };
 
-  componentWillUnmount = () => {};
+  // componentWillUnmount = () => {
+  //   window.removeEventListener('keydown', this.hendleClick);
+  // };
 
   closeMOdal = () => {
     this.props.onClose();
